@@ -1,0 +1,181 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://scripts/GameSpace.gd" type="Script" id=1]
+[ext_resource path="res://assets/backdround3.jpg" type="Texture" id=2]
+[ext_resource path="res://scenes/Nave.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/Nave.gd" type="Script" id=4]
+[ext_resource path="res://scenes/obstaculo.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/Gerador_de_obstaculo.gd" type="Script" id=6]
+
+[sub_resource type="Animation" id=1]
+
+resource_name = "AnimacaoFundo"
+length = 2.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("FundoAnimado/Sprite1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -830, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("FundoAnimado/Sprite2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 802.042, -1.01349 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=6]
+
+custom_solver_bias = 0.0
+extents = Vector2( 60.3225, 18.563 )
+
+[sub_resource type="SegmentShape2D" id=2]
+
+custom_solver_bias = 0.0
+a = Vector2( 0, 0 )
+b = Vector2( 600.518, -2.14412 )
+
+[sub_resource type="SegmentShape2D" id=3]
+
+custom_solver_bias = 0.0
+a = Vector2( 560.263, 177.795 )
+b = Vector2( -37.3765, 178.095 )
+
+[sub_resource type="SegmentShape2D" id=4]
+
+custom_solver_bias = 0.0
+a = Vector2( 0, 0 )
+b = Vector2( -0.393494, 398.293 )
+
+[sub_resource type="SegmentShape2D" id=5]
+
+custom_solver_bias = 0.0
+a = Vector2( 270.764, -366.587 )
+b = Vector2( 271.872, 31.1968 )
+
+[node name="Principal" type="Node2D" index="0"]
+
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "Z Index" ]
+
+[node name="FundoAnimado" type="AnimationPlayer" parent="." index="0"]
+
+editor/display_folded = true
+root_node = NodePath("..")
+autoplay = "AnimacaoFundo"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/AnimacaoFundo = SubResource( 1 )
+blend_times = [  ]
+
+[node name="Sprite1" type="Sprite" parent="FundoAnimado" index="0"]
+
+position = Vector2( -1000, 0 )
+scale = Vector2( 1, 1.16412 )
+texture = ExtResource( 2 )
+centered = false
+_sections_unfolded = [ "Offset", "Transform", "Z Index" ]
+
+[node name="Sprite2" type="Sprite" parent="FundoAnimado" index="1"]
+
+scale = Vector2( 1, 1.17052 )
+texture = ExtResource( 2 )
+centered = false
+_sections_unfolded = [ "Offset", "Transform", "Z Index" ]
+
+[node name="Nave" parent="." index="1" instance=ExtResource( 3 )]
+
+editor/display_folded = true
+z_index = 1
+script = ExtResource( 4 )
+_sections_unfolded = [ "Collision", "Material", "Visibility", "Z Index", "collision" ]
+aceleracao = Vector2( 200, 200 )
+DRAG = Vector2( 300, 300 )
+
+[node name="Area_de_colisao_nave" type="CollisionShape2D" parent="Nave" index="1"]
+
+position = Vector2( -0.242325, -0.0387268 )
+shape = SubResource( 6 )
+
+[node name="Limites_tela" type="StaticBody2D" parent="." index="2"]
+
+editor/display_folded = true
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Collision", "Pickable", "Z Index" ]
+
+[node name="Limite_cima" type="CollisionShape2D" parent="Limites_tela" index="0"]
+
+shape = SubResource( 2 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Limite_baixo" type="CollisionShape2D" parent="Limites_tela" index="1"]
+
+position = Vector2( 38.5881, 221.36 )
+shape = SubResource( 3 )
+_sections_unfolded = [ "Z Index" ]
+
+[node name="Limite_esquerda" type="CollisionShape2D" parent="Limites_tela" index="2"]
+
+shape = SubResource( 4 )
+
+[node name="Limite_direita" type="CollisionShape2D" parent="Limites_tela" index="3"]
+
+position = Vector2( 328.646, 365.551 )
+shape = SubResource( 5 )
+
+[node name="obstaculos" type="Node2D" parent="." index="3"]
+
+editor/display_folded = true
+z_index = 5
+_sections_unfolded = [ "Transform", "Z Index" ]
+
+[node name="obstaculo" parent="obstaculos" index="0" instance=ExtResource( 5 )]
+
+position = Vector2( 655.575, 203.309 )
+_sections_unfolded = [ "Transform", "Z Index" ]
+vel = 0
+
+[node name="Gerador_de_obstaculo" type="Position2D" parent="obstaculos/obstaculo" index="2"]
+
+script = ExtResource( 6 )
+_sections_unfolded = [ "Transform", "Z Index" ]
+
+[node name="Timer" type="Timer" parent="obstaculos/obstaculo/Gerador_de_obstaculo" index="0"]
+
+process_mode = 1
+wait_time = 3.0
+one_shot = false
+autostart = true
+_sections_unfolded = [ "Pause" ]
+
+[node name="reiniciar_jogo" type="Timer" parent="." index="4"]
+
+process_mode = 1
+wait_time = 2.0
+one_shot = false
+autostart = false
+
+[connection signal="timeout" from="obstaculos/obstaculo/Gerador_de_obstaculo/Timer" to="obstaculos/obstaculo/Gerador_de_obstaculo" method="_on_Timer_timeout"]
+
+

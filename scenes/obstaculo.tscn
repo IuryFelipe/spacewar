@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scripts/obstaculo.gd" type="Script" id=1]
+[ext_resource path="res://assets/planet.png" type="Texture" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 36.1222
+
+[node name="obstaculo" type="Node2D" index="0"]
+
+z_index = 5
+script = ExtResource( 1 )
+_sections_unfolded = [ "Z Index" ]
+vel = -100
+
+[node name="planeta" type="Sprite" parent="." index="0"]
+
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 2 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Area2D" type="Area2D" parent="." index="1"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="area_de_colisao" type="CollisionShape2D" parent="Area2D" index="0"]
+
+position = Vector2( 2, -3 )
+shape = SubResource( 1 )
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+
+
